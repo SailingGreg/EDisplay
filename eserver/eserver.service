@@ -1,0 +1,22 @@
+# 
+# EDisplay server systemd service configuration file
+# install to /lib/systemd/system/eserver.service
+# then systemctl daemon-reload
+# & then systemctl enable eserver.service
+# & then systemctl enable start eserver.service
+
+[Unit]
+Description=Epaper Display Client
+After=multi-user.target
+
+[Service]
+Type=idle
+#/home/pi/EDisplay/eserver
+
+#ExecStart=/home/pi/Watermeter/wmeter.sh
+ExecStart=/usr/bin/python3 /home/pi/EDisplay/eserver/display.py
+StandardOutput=file:/home/pi/EDisplay/eserver/eserver.log
+StandardError=file:/home/pi/EDisplay/eserver/eserver.err
+
+[Install]
+WantedBy=multi-user.target

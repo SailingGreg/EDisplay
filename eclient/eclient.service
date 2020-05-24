@@ -1,4 +1,5 @@
-# wmeter systemd service configuration file
+# 
+# EDisplay client systemd service configuration file
 # install to /lib/systemd/system/eclient.service
 # then systemctl daemon-reload
 # & then systemctl enable eclient.service
