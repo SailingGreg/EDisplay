@@ -7,6 +7,8 @@ from PIL import Image, ImageFont
 import sys
 import os
 
+from ecreds import *
+
 # need the name of root of the pic and lib directories
 # they also have fonts under fonts under picdir
 
@@ -27,7 +29,7 @@ if os.path.exists(locallib):
 # definitions
 #sdelay = 300
 FIVE_MINS = 300
-ranelaghlogo = "./tmp/ranelagh-253x47"
+ranelaghlogo = LOC + "./tmp/ranelagh-253x47"
 #ranelaghlogo = "./tmp/RSC-180x33"
 
 # mapping to images
@@ -74,13 +76,11 @@ fontweatherbig = ImageFont.truetype(LOC+ './epaperws/fonts/meteocons-webfont.ttf
 
 
 #
-# retrieve the access keys from the environment
-#owm_key = os.environ.get('OWM_KEY')
-owm_key="6d898facc5fccdaa035533d20b37d2d8"
-#met_id = os.environ.get('MET_ID')
-met_id = "4fb7d86f-aeb4-40d7-b78d-f3ed2dd81a2b"
-#met_key = os.environ.get('MET_KEY')
-met_key = "Y8xW2uN8vM0dQ0sD0uQ1xB5aK3sC6vY5eK1tA5yQ6lN5hY1bI8"
+# credentials are in the ecreds.py file
+#owm_key="xxx"
+#met_id = "xxx-xxx-xxx-xxx-xxx"
+#met_key = "xxx"
+
 class PInitServer:
     # function to convert logo
     def ranelaghLogo(self):

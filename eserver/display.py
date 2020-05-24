@@ -59,6 +59,9 @@ logging.basicConfig(level=logging.INFO)
 logging.info("server and nginx")
 
 
+# added to directory absolute for systemd
+LOC = "/home/pi/EDisplay/eserver/"
+
 if (initServer.owm_key == "" or initServer.met_id == "" or initServer.met_key == ""):
     print ("Please set OWM_KEY, MET_ID and MET_KEY")
     exit(1)
@@ -128,8 +131,8 @@ try:
         draw = ImageDraw.Draw(Himage2)
         draw.text((10, 0), 'Club Wind', font = initServer.font36, fill = 0)
 
-        bmp = Image.open("./tmp/daywind.png")
-        bmp2 = Image.open("./tmp/daywinddir.png")
+        bmp = Image.open(LOC + "./tmp/daywind.png")
+        bmp2 = Image.open(LOC + "./tmp/daywinddir.png")
         bmp3 = Image.open(initServer.ranelaghlogo + ".bmp")
 
         # these image are 300 x 180 by default - gap 10 pixels
@@ -257,7 +260,7 @@ try:
 
         # save a copy of the image
         if (oneRun == 1):
-            Himage2.save("./static/screen.bmp")
+            Himage2.save(LOC + "./static/screen.bmp")
             #Himage2.save("./tmp/screen.bmp")
 
         #sleep

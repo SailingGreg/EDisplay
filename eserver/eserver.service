@@ -6,7 +6,7 @@
 # & then systemctl enable start eserver.service
 
 [Unit]
-Description=Epaper Display Client
+Description=Epaper Display Server
 After=multi-user.target
 
 [Service]

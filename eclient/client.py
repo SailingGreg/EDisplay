@@ -23,15 +23,15 @@ import time
 
 # need the name of root of the pic and lib directories
 #picdir = "./epaperws/pic"
-picdir = "/home/pi/Cdisplay/Epaper-client/epaperws/pic"
+picdir = "/home/pi/EDisplay/eclient/epaperws/pic"
 #libdir = "./epaperws/lib"
-libdir = "/home/pi/Cdisplay/Epaper-client/epaperws/lib"
-#/home/pi/Cdisplay/Epaper-client
+libdir = "/home/pi/EDisplay/eclient/epaperws/lib"
+#/home/pi/EDisplay/eclient
 if os.path.exists(libdir):
     sys.path.append(libdir)
 
 from PIL import Image
-from waveshare_epd import epd7in5_V2 # for the 800x600 V2
+from waveshare_epd import epd7in5_V2 # for the 800x480 V2
 
 # definitions
 #sdelay = 300
