@@ -1,0 +1,7 @@
+#
+# credentials template for the Met Office and Open Weather
+#
+
+owm_key="xxxx"
+met_id = "xxxx-xxxx-xxxx-xxxx-xxxx"
+met_key = "xxxx"
