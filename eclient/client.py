@@ -39,6 +39,7 @@ import platform
     #display = "epd4in2"
 #from waveshare_epd import display # for the 400x300
 
+print(platform.node())
 if (platform.node() == "piepaper"):
     from waveshare_epd import epd7in5_V2 # for the 800x480 V2
 else:
