@@ -52,6 +52,11 @@ import pyowm # wraps open weather apis
 from lxml import html
 from bs4 import BeautifulSoup
 
+EPD7in5WIDTH = 800
+EPD7in5HEIGHT = 480
+EPD4in2WIDTH = 400
+EPD4in2HEIGHT = 300
+
 import initServer
 import getEaukFlow, getEvents, getFlow, getMet, getObs, getopt, getPosts, getTides, getWind
 # changed from DEBUG to INFO
@@ -62,9 +67,9 @@ logging.info("server and nginx")
 # added to directory absolute for systemd
 LOC = "/home/pi/EDisplay/eserver/"
 
-if (initServer.owm_key == "" or initServer.met_id == "" or initServer.met_key == ""):
-    print ("Please set OWM_KEY, MET_ID and MET_KEY")
-    exit(1)
+#if (initServer.owm_key == "" or initServer.met_id == "" or initServer.met_key == ""):
+    #print ("Please set OWM_KEY, MET_ID and MET_KEY")
+    #exit(1)
 
 #
 # main()
@@ -97,9 +102,9 @@ try:
         temperature = weather.get_temperature(unit='celsius')
         sunrise = weather.get_sunrise_time()
         sunset = weather.get_sunset_time()
-        print (obs1)
+        #print (obs1)
 
-        # load tides every second loop
+        # load tides every 6 times through the loop
         if ((loop % 6) == 0):
             logging.info("loadTides ...")
             prtides = getTides.PTides().loadTides()
@@ -123,14 +128,18 @@ try:
         # Note changing width/height changes the orientation
         # 255: clear the frame
         #Himage2 = Image.new('1', (epd.width, epd.height), 255)
-        # corrected to reflect the v2 dimensions
-        Himage2 = Image.new('1', (800, 480), 255)
+        # corrected to reflect the v2 dimensions in landscape
+        Himage2 = Image.new('1', (EPD7in5WIDTH, EPD7in5HEIGHT), 255)
+        # image for the 4in2 display in portrait
+        smallImage = Image.new('1', (EPD4in2WIDTH, EPD4in2HEIGHT), 255)
         #Himage2 = Image.new('1', (800, 600), 255)
 
         # draw is just shorthand to make the code more readable
         draw = ImageDraw.Draw(Himage2)
+        smalldraw = ImageDraw.Draw(smallImage)
         draw.text((10, 0), 'Club Wind', font = initServer.font36, fill = 0)
 
+        # load the wind and ranelagh images
         bmp = Image.open(LOC + "./tmp/daywind.png")
         bmp2 = Image.open(LOC + "./tmp/daywinddir.png")
         bmp3 = Image.open(initServer.ranelaghlogo + ".bmp")
@@ -139,18 +148,30 @@ try:
         Himage2.paste(bmp, (10, 46))
         Himage2.paste(bmp2, (10, 180 + 10 + 46)) # 236
         Himage2.paste(bmp3, (10, 2*180 + 20 + 46)) # 236
+        # use a negative offset to 'trim' the image
+        smallImage.paste(bmp3, (-20, EPD4in2HEIGHT - 50)) # 236
+        #smallImage.paste(bmp3, (0, EPD4in2HEIGHT - 50)) # 236
 
-        # add date & time - bottom left
+        # add date & time - top right
         tnow = datetime.datetime.now()
         imgtext = tnow.strftime('%d %b %Y %H:%M')
         dw, h = draw.textsize(imgtext, font=initServer.font24)
-        draw.text((800-dw-10, 0), imgtext, font = initServer.font24, fill = 0)
+        sdw, sh = draw.textsize(imgtext, font=initServer.font16)
+        draw.text((EPD7in5WIDTH-dw-10, 0), imgtext, \
+                                font = initServer.font24, fill = 0)
+
+        smalldraw.text((EPD4in2WIDTH-sdw-10, 0), imgtext, \
+                                font = initServer.font16, fill = 0)
 
 
         # for now this is just to the right
+        Column1 = 0
         Column2 = 320 # the horizontal offset
         draw = ImageDraw.Draw(Himage2)
-        draw.text((Column2, 0), 'Club Events', font = initServer.font36, fill = 0)
+        draw.text((Column2, 0), 'Club Events', font = initServer.font36,\
+                                                                    fill = 0)
+        smalldraw.text((Column1, 0), 'Club Events', font = initServer.font32, \
+                                                                    fill = 0)
 
         mecendpoint = 'https://ranelaghsc.co.uk/wp-json/mecexternal/v1/event/'
 
@@ -169,11 +190,15 @@ try:
             prdate = initServer.PInitServer().mectodate(estart_date, int(estart_hour), int(estart_mins), estart_ampm)
             imgtext = prdate.strftime('%a %d %b %Y %H:%M') + " - " + etitle
 
-            # add 2 pixels - leading is ????
             txt = " > " + cleantext[0:65]
+            # the following is rendered twice to effect 'bold'
             draw.text((Column2, 2*x* 20 + 40), imgtext, font = initServer.font16, fill = 0)
             draw.text((Column2, 2*x* 20 + 41), imgtext, font = initServer.font16, fill = 0)
             draw.text((Column2, (2*x+1) * 20 + 40), txt, font = initServer.font16, fill = 0)
+
+            # just add the title for small displays
+            smalldraw.text((Column1, x * 20 + 40), imgtext, \
+                                        font = initServer.font16, fill = 0)
         # end while
 
         # now the weather forecast and observations
@@ -232,9 +257,14 @@ try:
 
         # and finally the tides!
         tiderow = 236 + 36 + 6 * 18
+        stiderow = 150
         draw.text((Column2, tiderow), "Tides", font = initServer.font28, fill = 0)
+        smalldraw.text((Column1, stiderow), "Tides", font = initServer.font28, fill = 0)
         dw, h = draw.textsize("Tides", font=initServer.font28)
-        draw.text((Column2 + dw + 14, tiderow + 28 - 14), "(via thamestides)", font = initServer.font14, fill = 0)
+        draw.text((Column2 + dw + 14, tiderow + 28 - 14), \
+                    "(via thamestides.org)", font = initServer.font14, fill = 0)
+        smalldraw.text((Column1 + dw + 14, stiderow + 28 - 14), \
+                    "(via thamestides.org)", font = initServer.font14, fill = 0)
         tidestr1 = ""
         tidestr2 = ""
         for row in range (0, 4):
@@ -253,14 +283,19 @@ try:
 
         # end for
         draw.text((Column2, tiderow + 32), tidestr1, font = initServer.font16, fill = 0)
+        smalldraw.text((Column1, stiderow + 32), tidestr1, font = initServer.font16, fill = 0)
         draw.text((Column2, tiderow + 32 + 18), tidestr2, font = initServer.font16, fill = 0)
+        smalldraw.text((Column1, stiderow + 32 + 18), tidestr2, font = initServer.font16, fill = 0)
 
         # Add the river flow
         draw.text((Column2, tiderow + 32 + 2 * 18), rflow, font = initServer.font16, fill = 0)
+        smalldraw.text((Column1, stiderow + 32 + 2 * 18), rflow, font = initServer.font16, fill = 0)
 
         # save a copy of the image
         if (oneRun == 1):
             Himage2.save(LOC + "./static/screen.bmp")
+            #Himage2.save(LOC + "./static/7in5image.bmp")
+            smallImage.save(LOC + "./static/4in2image.bmp")
             #Himage2.save("./tmp/screen.bmp")
 
         #sleep
