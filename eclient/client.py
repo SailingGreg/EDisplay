@@ -80,31 +80,28 @@ try:
     while (True):
 
         print("init and Clear")
-        epd.init()
+        epd.init() # clear removed
         
         # request a copy of the image
         r = requests.get(url, allow_redirects=True)        
         open('display.bmp', 'wb').write(r.content)
-        #§img = Image.open("display.png")
+        #img = Image.open("display.png")
         img = Image.open("display.bmp")
 
         # display and then sleep
         epd.display(epd.getbuffer(img))
         time.sleep(5)
-        #loop = loop + 1
 
         # should put the display to sleep & then delay 5 mins -> 300 seconds
         print("sleeping ...")
         epd.sleep()
 
-        # sleep until 5mins is up
+        # sleep until 5mins is up - min recommedned is 3mins
         if ((next_call - time.time()) > 0.0):
             time.sleep(next_call - time.time())
 
         #time.sleep(300)
         next_call = time.time() + FIVE_MINS
-
-        #time.sleep(180) # minimum refresh interval
 
         loop = loop + 1
         if (loop == 100): # reset so it nevers exceeds 'int'
@@ -123,11 +120,17 @@ try:
 except IOError as e:
     print ('traceback.format_exc():\n%s', traceback.format_exc())
     print(e)
-    epd7in5_V2.epdconfig.module_exit()
+    if (platform.node() == "piepaper"):
+        epd7in5_V2.epdconfig.module_exit()
+    else:
+        epd4in2.epdconfig.module_exit()
     
 except KeyboardInterrupt:    
     print("ctrl + c:")
-    epd7in5_V2.epdconfig.module_exit()
+    if (platform.node() == "piepaper"):
+        epd7in5_V2.epdconfig.module_exit()
+    else:
+        epd4in2.epdconfig.module_exit()
     exit()
 
 # end file
