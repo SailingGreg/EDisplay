@@ -1,5 +1,5 @@
 #
-# display.py - display information on an epaper display
+# eclient.py - display information on an epaper display
 #
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -31,35 +31,41 @@ if os.path.exists(libdir):
     sys.path.append(libdir)
 
 from PIL import Image
-from waveshare_epd import epd7in5_V2 # for the 800x480 V2
+import platform
+
+#if (platform.node() == "piepaper"):
+    #display = "epd7in5_V2"
+#else:
+    #display = "epd4in2"
+#from waveshare_epd import display # for the 400x300
+
+if (platform.node() == "piepaper"):
+    from waveshare_epd import epd7in5_V2 # for the 800x480 V2
+else:
+    from waveshare_epd import epd4in2 # for the 400x300
+
 
 # definitions
 #sdelay = 300
 FIVE_MINS = 300
 #url = "https://waveshare_epd.com/screen.bmp"
-url = "http://piepaper/screen.bmp"
+if (platform.node() == "piepaper"):
+    url = "http://piepaper/screen.bmp"
+else:
+    url = "http://piepaper/4in2image.bmp"
 
-
-# used for pyowm install as it is a 'local' install
-#locallib = "/usr/local/lib/python3.7/site-packages"
-locallib = "/home/pi/.local/lib/python3.7/site-packages"
-if os.path.exists(locallib):
-    sys.path.append(locallib)
-# retrieve the access keys from the environment
-#owm_key = os.environ.get('OWM_KEY')
-#met_id = os.environ.get('MET_ID')
-#met_key = os.environ.get('MET_KEY')
-
-#if (owm_key == "" or met_id == "" or met_key == ""):
-    #print ("Please set OWM_KEY, MET_ID and MET_KEY")
-    #exit(1)
 
 #
 # main()
 #
 try:
     # Initialise the interface
-    epd = epd7in5_V2.EPD()
+    if (platform.node() == "piepaper"):
+        epd = epd7in5_V2.EPD()
+    else:
+        epd = epd4in2.EPD()
+        #display = epd4in2
+        #epd = display.EPD()
 
     # for one run
     oneRun = 1
