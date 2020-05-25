@@ -124,6 +124,7 @@ try:
             timeseries = getMet.PMet().getMet() # return list
             noTimeseries = len(timeseries)
 
+        #Column1 = 10
         logging.info("4.read bmp file on window")
         # Note changing width/height changes the orientation
         # 255: clear the frame
@@ -144,13 +145,17 @@ try:
         bmp2 = Image.open(LOC + "./tmp/daywinddir.png")
         bmp3 = Image.open(initServer.ranelaghlogo + ".bmp")
 
+        # for now this is just to the right
+        Column1 = 10
+        Column2 = 320 # the horizontal offset
+
         # these image are 300 x 180 by default - gap 10 pixels
-        Himage2.paste(bmp, (10, 46))
-        Himage2.paste(bmp2, (10, 180 + 10 + 46)) # 236
-        Himage2.paste(bmp3, (10, 2*180 + 20 + 46)) # 236
+        Himage2.paste(bmp, (Column1, 46))
+        Himage2.paste(bmp2, (Column1, 180 + 10 + 46)) # 236
+        Himage2.paste(bmp3, (Column1 - 30, 2*180 + 20 + 46)) # 236
         # use a negative offset to 'trim' the image
-        smallImage.paste(bmp3, (-20, EPD4in2HEIGHT - 50)) # 236
-        #smallImage.paste(bmp3, (0, EPD4in2HEIGHT - 50)) # 236
+        smallImage.paste(bmp3, (Column1 - 30, EPD4in2HEIGHT - 50)) # 236
+        #smallImage.paste(bmp3, (Column1, EPD4in2HEIGHT - 50)) # 236
 
         # add date & time - top right
         tnow = datetime.datetime.now()
@@ -164,9 +169,6 @@ try:
                                 font = initServer.font16, fill = 0)
 
 
-        # for now this is just to the right
-        Column1 = 0
-        Column2 = 320 # the horizontal offset
         draw = ImageDraw.Draw(Himage2)
         draw.text((Column2, 0), 'Club Events', font = initServer.font36,\
                                                                     fill = 0)
