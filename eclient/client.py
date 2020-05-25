@@ -47,14 +47,14 @@ else:
 
 
 # definitions
-#sdelay = 300
 FIVE_MINS = 300
-#url = "https://waveshare_epd.com/screen.bmp"
+HOST = "http://piepaper/"
 if (platform.node() == "piepaper"):
-    url = "http://piepaper/screen.bmp"
+    url = HOST + "screen.bmp"
 else:
-    url = "http://piepaper/4in2image.bmp"
+    url = HOST + "4in2image.bmp"
 
+#print(url)
 
 #
 # main()
@@ -82,9 +82,13 @@ try:
         print("init and Clear")
         epd.init() # clear removed
         
-        # request a copy of the image
-        r = requests.get(url, allow_redirects=True)        
-        open('display.bmp', 'wb').write(r.content)
+        # request an updated copy of the image
+        try:
+            r = requests.get(url, allow_redirects=True)        
+            open('display.bmp', 'wb').write(r.content)
+        except Exception as e:
+            print("Error on get image")
+
         #img = Image.open("display.png")
         img = Image.open("display.bmp")
 
