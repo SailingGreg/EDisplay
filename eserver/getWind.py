@@ -2,6 +2,8 @@ import requests
 import logging
 from PIL import Image
 
+LOC = "/home/pi/EDisplay/eserver/"
+
 winddomain = "https://wind.ranelaghsc.co.uk/"
 windurl = winddomain + "daywind.png"
 winddirurl = winddomain + "daywinddir.png"
@@ -12,20 +14,20 @@ class PWind:
     def loadWind (self):
         try:
             rs = requests.get(windurl, allow_redirects=True)
-            open('./tmp/daywind-copy.png', 'wb').write(rs.content)
+            open(LOC + './tmp/daywind-copy.png', 'wb').write(rs.content)
         except Exception as e:
             logging.error("loadWind(): daywind",  exc_info=True)
             return
 
         try:
             rs2 = requests.get(winddirurl, allow_redirects=True)
-            open('./tmp/daywinddir-copy.png', 'wb').write(rs2.content)
+            open(LOC + './tmp/daywinddir-copy.png', 'wb').write(rs2.content)
         except Exception as e:
             logging.error("loadWind(): daywinddir",  exc_info=True)
             return
 
         try:
-            file_in = "./tmp/daywind"
+            file_in = LOC + "./tmp/daywind"
             img = Image.open(file_in + "-copy.png")
             #img2 = img.convert("1")
             img2 = img.convert("LA")
@@ -35,7 +37,7 @@ class PWind:
             return
 
         try:
-            file_in = "./tmp/daywinddir"
+            file_in = LOC + "./tmp/daywinddir"
             img = Image.open(file_in + "-copy.png")
             img2 = img.convert("1")
             img2.save(file_in + ".png")
