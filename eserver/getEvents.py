@@ -59,9 +59,12 @@ class PEvents:
 
         # following has been changed 15!
         #reqstr = eventsurl + "?per_page=15&order=desc"
-        req = requests.get(mecurl)
-        if (req.status_code != 200):
-            logging.error("events return not 200")
+        try:
+            req = requests.get(mecurl)
+            if (req.status_code != 200):
+                logging.error("events return not 200")
+        except Exception as e:
+            logging.error("Error loadEvents()")
             return 0
 
         jdict = req.json()
