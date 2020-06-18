@@ -39,6 +39,8 @@ headers=""
 metreq = "/metoffice/production/v0/forecasts/point/hourly?excludeParameterMetadata=false&includeLocationName=false&latitude=51.469&longitude=-0.2199"
 class PMet:
 
+    oldrdict = []
+
     def getMet (self):
         global headers
 
@@ -49,11 +51,16 @@ class PMet:
             'x-ibm-client-secret': initServer.met_key,
             'accept': "application/json"
         }
-        req = requests.get(meturl + metreq, headers=headers)
-        #print (req.status_code)
 
-        #rgeo = geojson(req.text)
-        rdict = req.json()
+        try:
+            req = requests.get(meturl + metreq, headers=headers)
+            #print (req.status_code)
+
+            #rgeo = geojson(req.text)
+            rdict = req.json()
+            self.oldrdict = rdict
+        except Exception as e:
+            rdict = self.oldrdict
 
         # trick to get a timeseries 'dict'
         for feature in rdict['features']:
