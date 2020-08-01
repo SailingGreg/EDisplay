@@ -119,7 +119,8 @@ try:
             noEvents = getEvents.PEvents().loadEvents() # return list
             mecevents = getEvents.events # the global
 
-        if ((loop % 3) == 0):
+        # changed from 3 to 6 to half the number of calls
+        if ((loop % 6) == 0):
             logging.info("getMet ...")
             timeseries = getMet.PMet().getMet() # return list
             noTimeseries = len(timeseries)

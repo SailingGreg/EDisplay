@@ -40,6 +40,7 @@ metreq = "/metoffice/production/v0/forecasts/point/hourly?excludeParameterMetada
 class PMet:
 
     oldrdict = []
+    oldtimeseries = []
 
     def getMet (self):
         global headers
@@ -62,15 +63,21 @@ class PMet:
         except Exception as e:
             rdict = self.oldrdict
 
-        # trick to get a timeseries 'dict'
-        for feature in rdict['features']:
-            #print ("Loop: ", x)
-            #print (feature['type'])
-            #print (feature['geometry']['type'])
-            #print (feature['geometry']['coordinates'])
-            #print (feature['properties']['requestPointDistance'])
-            #print (feature['properties']['modelRunDate'])
-            timeseries = feature['properties']['timeSeries']
+        # guard for truncated rdict
+        try:
+            for feature in rdict['features']:
+                #print ("Loop: ", x)
+                #print (feature['type'])
+                #print (feature['geometry']['type'])
+                #print (feature['geometry']['coordinates'])
+                #print (feature['properties']['requestPointDistance'])
+                #print (feature['properties']['modelRunDate'])
+                timeseries = feature['properties']['timeSeries']
+                self.oldtimeseries = timeseries
+        except Exception as e:
+            timeseries = self.oldtimeseries
+            print (req.status_code)
+            print (rdict)
 
         # return timeseries dict
         return (timeseries)
