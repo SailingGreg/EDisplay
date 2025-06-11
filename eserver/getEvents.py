@@ -41,13 +41,14 @@ eventsurl = "https://ranelaghsc.co.uk/wp-json/wp/v2/mec-events"
 mecurl = siteurl + "wp-json/mecexternal/v1/calendar/922"
 # the events list
 events =["", "", ""]
+oldreq = 0
 
 #
 # get the MEC events
 #
 class PEvents:
     def loadEvents (self):
-        global events, eventsurl, mecurl
+        global events, eventsurl, mecurl, oldreq
 
         # note the current date & calc yesterday
         tnow = datetime.datetime.now()
@@ -62,10 +63,12 @@ class PEvents:
         try:
             req = requests.get(mecurl)
             if (req.status_code != 200):
-                logging.error("events return not 200")
+                logging.error(f"events return not 200 {req.status_code}")
+            oldreq = req
         except Exception as e:
             logging.error("Error loadEvents()")
-            return 0
+            req = oldreq
+            #return 0
 
         jdict = req.json()
         lenjdict = len(req.json())
