@@ -1,0 +1,6 @@
+Pillow
+python-dateutil
+requests
+lxml
+pyowm>=3
+bs4
