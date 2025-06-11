@@ -37,8 +37,30 @@ headers=""
 #headers = {
     #}
 metreq = "/metoffice/production/v0/forecasts/point/hourly?excludeParameterMetadata=false&includeLocationName=false&latitude=51.469&longitude=-0.2199"
+#
+metreq = "https://data.hub.api.metoffice.gov.uk/sitespecific/v0/point/" + "hourly"
+
+excludeMetadata="false"
+includeLocation="false"
+#latitude="51.469"
+#longitude="-0.2199"
+latitude = "50.7660"
+longitude = "-1.3067"
+# apikey defined in ecreds.py
+
+headers = {'accept': "application/json"
+        ,"apikey": initServer.apikey}
+    #headers.update(requestHeaders)
+params = {
+        'excludeParameterMetadata' : excludeMetadata,
+        'includeLocationName' : includeLocation,
+        'latitude' : latitude,
+        'longitude' : longitude
+        }
+
 class PMet:
 
+    req = 0
     oldrdict = []
     oldtimeseries = []
 
@@ -46,16 +68,19 @@ class PMet:
         global headers
 
         # set the headers based on the inject keys
+        '''
         if (headers == ""):
             headers = {
             'x-ibm-client-id': initServer.met_id,
             'x-ibm-client-secret': initServer.met_key,
             'accept': "application/json"
         }
+        '''
 
         try:
-            req = requests.get(meturl + metreq, headers=headers)
-            #print (req.status_code)
+            #req = requests.get(meturl + metreq, headers=headers)
+            req = requests.get(metreq, headers=headers, params=params)
+            print ("getMET: ", req.status_code)
 
             #rgeo = geojson(req.text)
             rdict = req.json()
@@ -66,7 +91,7 @@ class PMet:
         # guard for truncated rdict
         try:
             for feature in rdict['features']:
-                #print ("Loop: ", x)
+                #print ("Loop: ", feature)
                 #print (feature['type'])
                 #print (feature['geometry']['type'])
                 #print (feature['geometry']['coordinates'])
@@ -75,8 +100,9 @@ class PMet:
                 timeseries = feature['properties']['timeSeries']
                 self.oldtimeseries = timeseries
         except Exception as e:
+            print ("Exception ", e)
             timeseries = self.oldtimeseries
-            print (req.status_code)
+            #print (req.status_code)
             print (rdict)
 
         # return timeseries dict
