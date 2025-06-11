@@ -29,7 +29,8 @@ if os.path.exists(locallib):
 # definitions
 #sdelay = 300
 FIVE_MINS = 300
-ranelaghlogo = LOC + "./tmp/ranelagh-253x47"
+#ranelaghlogo = LOC + "./tmp/ranelagh-253x47"
+ranelaghlogo = LOC + "./tmp/ccyc-image-207x"
 #ranelaghlogo = "./tmp/RSC-180x33"
 
 # mapping to images
@@ -43,7 +44,8 @@ weather_icon_dict = {200:"6", 201:"6", 202:"6", 210:"6", 211:"6", 212 : "6",
                      615:"V", 616:"V", 620:"V", 621:"W", 622:"W", 
                      701:"M", 711:"M", 721:"M", 731:"M", 741:"M", 751 : "M",
                      761:"M", 762:"M", 771:"M", 781:"M",
-                     800:"1", 801:"H", 802:"N", 803:"N", 804:"Y" }
+                     800:"1", 801:"H", 802:"N", 803:"N", 804:"Y",
+                     "few clouds":"1", "scattered clouds":"H", "broken clouds":"N", "overcast clouds":"Y" }
 
 # the fonts
 # font40 = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), 40)
