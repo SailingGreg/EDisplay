@@ -41,13 +41,6 @@ class PTides:
         norows = 4
         nocols = 5
 
-        # added to address latest failure
-        try:
-            tidepage = requests.get(tideurl)
-            tree = html.fromstring(tidepage.content)
-        except Exception as e:
-            return tides
-
         #print (len(tides))
         if (len(tides) == 0): # then initialise
             for j in range(4, 4 + 4): # should be 4 - 8
@@ -57,6 +50,14 @@ class PTides:
                 tides.append(column)
         # now initialised
         #print (len(tides))
+
+        # added to address latest failure
+        try:
+            tidepage = requests.get(tideurl)
+            tree = html.fromstring(tidepage.content)
+        except Exception as e:
+            return tides
+
 
         # now parse the table into the array - note doesn't error
         for row in range (4, 4 + 4):
