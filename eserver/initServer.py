@@ -47,30 +47,39 @@ weather_icon_dict = {200:"6", 201:"6", 202:"6", 210:"6", 211:"6", 212 : "6",
                      800:"1", 801:"H", 802:"N", 803:"N", 804:"Y",
                      "few clouds":"1", "scattered clouds":"H", "broken clouds":"N", "overcast clouds":"Y" }
 
-# the fonts
-# font40 = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), 40)
-# font36 = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), 36)
-# font32 = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), 32)
-# font24 = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), 24)
-# font18 = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), 18)
-# font14 = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), 14)
-
-font40 = ImageFont.truetype(LOC + './pic/Font.ttc', 40)
-font36 = ImageFont.truetype(LOC + './pic/Font.ttc', 36)
-font32 = ImageFont.truetype(LOC + './pic/Font.ttc', 32)
-font24 = ImageFont.truetype(LOC + './pic/Font.ttc', 24)
-font18 = ImageFont.truetype(LOC + './pic/Font.ttc', 18)
-font14 = ImageFont.truetype(LOC + './pic/Font.ttc', 14)
-font16 = ImageFont.truetype(LOC + './pic/Font.ttc', 16)
-font28 = ImageFont.truetype(LOC + './pic/Font.ttc', 28)
-
-# font36 = ImageFont.truetype(LOC+ './epaperws/fonts/arial.ttf', 36)
-# font28 = ImageFont.truetype(LOC+ './epaperws/fonts/arial.ttf', 28)
-# font24 = ImageFont.truetype(LOC+ './epaperws/fonts/arial.ttf', 24)
-# font20 = ImageFont.truetype(LOC+ './epaperws/fonts/arial.ttf', 20)
-# font16 = ImageFont.truetype(LOC+ './epaperws/fonts/arial.ttf', 16)
-# # overwrite the 14 font
-# font14 = ImageFont.truetype(LOC+ './epaperws/fonts/arial.ttf', 14)
+# the fonts - using Arial for better resolution than Font.ttc
+# Fallback to Font.ttc if Arial is not available
+try:
+    font48 = ImageFont.truetype(LOC + './epaperws/fonts/arial.ttf', 48)
+    font40 = ImageFont.truetype(LOC + './epaperws/fonts/arial.ttf', 40)
+    font36 = ImageFont.truetype(LOC + './epaperws/fonts/arial.ttf', 36)
+    font32 = ImageFont.truetype(LOC + './epaperws/fonts/arial.ttf', 32)
+    font30 = ImageFont.truetype(LOC + './epaperws/fonts/arial.ttf', 30)
+    font28 = ImageFont.truetype(LOC + './epaperws/fonts/arial.ttf', 28)
+    font26 = ImageFont.truetype(LOC + './epaperws/fonts/arial.ttf', 26)
+    font24 = ImageFont.truetype(LOC + './epaperws/fonts/arial.ttf', 24)
+    font22 = ImageFont.truetype(LOC + './epaperws/fonts/arial.ttf', 22)
+    font20 = ImageFont.truetype(LOC + './epaperws/fonts/arial.ttf', 20)
+    font18 = ImageFont.truetype(LOC + './epaperws/fonts/arial.ttf', 18)
+    font16 = ImageFont.truetype(LOC + './epaperws/fonts/arial.ttf', 16)
+    font14 = ImageFont.truetype(LOC + './epaperws/fonts/arial.ttf', 14)
+    print("Using Arial fonts for improved resolution")
+except OSError:
+    # Fallback to Font.ttc if Arial is not available
+    font48 = ImageFont.truetype(LOC + './pic/Font.ttc', 48)
+    font40 = ImageFont.truetype(LOC + './pic/Font.ttc', 40)
+    font36 = ImageFont.truetype(LOC + './pic/Font.ttc', 36)
+    font32 = ImageFont.truetype(LOC + './pic/Font.ttc', 32)
+    font30 = ImageFont.truetype(LOC + './pic/Font.ttc', 30)
+    font28 = ImageFont.truetype(LOC + './pic/Font.ttc', 28)
+    font26 = ImageFont.truetype(LOC + './pic/Font.ttc', 26)
+    font24 = ImageFont.truetype(LOC + './pic/Font.ttc', 24)
+    font22 = ImageFont.truetype(LOC + './pic/Font.ttc', 22)
+    font20 = ImageFont.truetype(LOC + './pic/Font.ttc', 20)
+    font18 = ImageFont.truetype(LOC + './pic/Font.ttc', 18)
+    font16 = ImageFont.truetype(LOC + './pic/Font.ttc', 16)
+    font14 = ImageFont.truetype(LOC + './pic/Font.ttc', 14)
+    print("Fallback to Font.ttc - Arial not found")
 fontweather = ImageFont.truetype(LOC+ './epaperws/fonts/meteocons-webfont.ttf', 30)
 fontweatherbig = ImageFont.truetype(LOC+ './epaperws/fonts/meteocons-webfont.ttf', 60)
 #fontweather = ImageFont.truetype(LOC+ './pic/Font.ttc', 30)
