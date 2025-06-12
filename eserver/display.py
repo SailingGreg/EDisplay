@@ -38,6 +38,7 @@ import sys
 import os
 import logging
 import time
+# pillow 11.2.1 deprecated textsize -> textlength
 from PIL import Image, ImageDraw, ImageFont
 import traceback
 
@@ -246,8 +247,8 @@ try:
         # add date & time - top right
         tnow = datetime.datetime.now()
         imgtext = tnow.strftime('%d %b %Y %H:%M')
-        dw, h = draw.textsize(imgtext, font=initServer.font24)
-        sdw, sh = draw.textsize(imgtext, font=initServer.font16)
+        dw = draw.textlength(imgtext, font=initServer.font24)
+        sdw = draw.textlength(imgtext, font=initServer.font16)
         draw.text((EPD7in5WIDTH-dw-10, 0), imgtext, \
                                 font = initServer.font24, fill = 0)
 
@@ -342,11 +343,11 @@ try:
             itemp = str("{:>2d}".format(int(round(wtemp))))
 
             # note the 'width' for column calc
-            dw, h = draw.textsize(itime, font=initServer.font16)
-            ww, h = draw.textsize(iwind, font=initServer.font16)
-            wg, h = draw.textsize(igust, font=initServer.font16)
-            wd, h = draw.textsize(idir, font=initServer.font16)
-            wt, h = draw.textsize(itemp, font=initServer.font16)
+            dw = draw.textlength(itime, font=initServer.font16)
+            ww = draw.textlength(iwind, font=initServer.font16)
+            wg = draw.textlength(igust, font=initServer.font16)
+            wd = draw.textlength(idir, font=initServer.font16)
+            wt = draw.textlength(itemp, font=initServer.font16)
 
             draw.text((Column2 + 95 + x*48-dw, 274 + 0*18), itime, font = initServer.font16, fill = 0)
             draw.text((Column2 + 95 + x*48-ww, 274 + 1*18), iwind, font = initServer.font16, fill = 0)
@@ -360,7 +361,7 @@ try:
         stiderow = 150
         draw.text((Column2, tiderow), "Tides", font = initServer.font28, fill = 0)
         smalldraw.text((Column1, stiderow), "Tides", font = initServer.font28, fill = 0)
-        dw, h = draw.textsize("Tides", font=initServer.font28)
+        dw = draw.textlength("Tides", font=initServer.font28)
         if (TIDES):
             tstr = "(via thamestides.org)"
         else:
